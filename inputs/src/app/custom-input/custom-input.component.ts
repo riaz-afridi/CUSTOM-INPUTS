@@ -1,31 +1,40 @@
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Component,  forwardRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Directive, forwardRef } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
+export const VALUE_ACCESSOR = (component: any): any => ({
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => component),
+  multi: true,
+});
 
-@Component({
-  selector: 'custom-input',
-  template: '',
-  providers: [{
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => CustomInputComponent),
-      multi: true,
-    }]
-})
-export class CustomInputComponent implements ControlValueAccessor {
-  controlValue: any;
-  public valueChanged(value: string | null): void {}
+@Directive({ selector: 'custom-input' })
+export class CustomInputComponent<T> {
+  control = new FormControl();
+
+  public valueChanged(value: T): void { }
+
   public touched(): void {}
 
-  writeValue(value: any): void {
-    this.controlValue = value;
+  writeValue(value: T): void {
+    this.control.setValue(value);
     console.log(value);
   }
 
   registerOnChange(fn: any): void {
     this.valueChanged = fn;
   }
+
   registerOnTouched(fn: any): void {
     this.touched = fn;
   }
-}
 
+  setDisabledState(disabled: boolean): void {
+    if (disabled) {
+      this.control.disable();
+    } else {
+      this.control.enable();
+    }
+    
+  }
+}

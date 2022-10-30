@@ -16,4 +16,16 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 20px;
+}
+
+
+button{
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }

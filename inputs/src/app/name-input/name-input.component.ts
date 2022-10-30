@@ -1,11 +1,17 @@
-import { CustomInputComponent } from '../custom-input/custom-input.component';
+import { CustomInputComponent, VALUE_ACCESSOR } from '../custom-input/custom-input.component';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+
+
 
 @Component({
   selector: 'name-input',
-  template: `<input [value]="controlValue" style-directive />`,
+  template: `
+    <input
+      [formControl]="control"
+      (change)="valueChanged(control.value)"
+      style-directive height="100%" width="100%"
+    />`,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [VALUE_ACCESSOR(NameInputComponent)],
 })
-export class NameInputComponent extends CustomInputComponent {
-  // Some additional behavior
-}
+export class NameInputComponent extends CustomInputComponent<string> {}
